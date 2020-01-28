@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - platform
+  - CameraTarget
   layers:
   - Default
   - TransparentFX
@@ -13,7 +15,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - CameraCollider
   - 
   - 
   - 
@@ -38,15 +40,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 1988455705
+    locked: 0
+  - name: Stage
+    uniqueID: 1752682665
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: background
-    uniqueID: 874350243
-    locked: 0
-  - name: stage
-    uniqueID: 644383253
-    locked: 0
-  - name: frorntground
-    uniqueID: 2161638157
+  - name: Foreground
+    uniqueID: 1950422495
     locked: 0
