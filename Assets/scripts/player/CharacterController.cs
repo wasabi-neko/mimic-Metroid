@@ -16,21 +16,29 @@ public class CharacterController : MonoBehaviour
     public float def = 1;
     public int hpMax = 10;
     public int hp = 10;  // init at `Start()`
+    public GameObject bulletPrefab;
 
-    [Header("Character grounded checker")]
+    [Header("Character chliderns")]
     public PlayerGroundChecker groundChecker;
+    public GameObject weapon;
+    private Transform _firePoint;
 
     [Header("Character Private Status")]
     private bool _freezedByEvent = false;    // chara freezed by event like UI
     private int _jumpEnerge = 0;
     private Vector3 _movementForce;
+    private bool _attacking = false;
     private Rigidbody2D _rigidbody2D;
     #endregion
 
     #region Character Methods
-    public void Attack()
+    public void AttackUpdate()
     {
-
+        if (_attacking)
+        {
+            _attacking = false;
+            Instantiate(bulletPrefab, _firePoint.position, _firePoint.rotation);
+        }
     }
     public void MoveUpdate(Vector2 inputSpeed)
     {
@@ -51,11 +59,11 @@ public class CharacterController : MonoBehaviour
         // TODO: draw img: "look left"
         if (inputSpeed.x > 0)
         {
-            transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
+            transform.rotation = Quaternion.Euler(0, 0, 0);;
         }
         else if (inputSpeed.x < 0)
         {
-            transform.localScale = new Vector3(-1, transform.localScale.y, transform.localScale.z);
+            transform.rotation = Quaternion.Euler(0, 180, 0);
         }
     }
 
@@ -77,6 +85,7 @@ public class CharacterController : MonoBehaviour
         // initialize
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
+        _firePoint = weapon.transform;
 
         hp = hpMax;
         moveSpeed = moveSpeedMax;
@@ -88,6 +97,7 @@ public class CharacterController : MonoBehaviour
     {
         JumpUpdate(Vector2.up * jumpSpeed * Time.fixedDeltaTime);
         MoveUpdate(_movementForce * Time.fixedDeltaTime);
+        AttackUpdate();
     }
 
     // Update is called once per frame
@@ -116,6 +126,10 @@ public class CharacterController : MonoBehaviour
             if (!InputManager.GetKey("jump"))
             {
                 _jumpEnerge = 0;
+            }
+            if (InputManager.GetKeyDown("attack"))
+            {
+                _attacking = true;
             }
         }
     }
