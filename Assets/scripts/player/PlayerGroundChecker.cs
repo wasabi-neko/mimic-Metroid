@@ -21,7 +21,7 @@ public class PlayerGroundChecker : MonoBehaviour
     {
         if (other.tag == "platform" && isGrounded == false)
         {
-            isGrounded = true;
+            isGrounded = true; 
         }
     }
 

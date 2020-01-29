@@ -6,6 +6,8 @@ TagManager:
   tags:
   - platform
   - CameraTarget
+  - Bullet
+  - Monster
   layers:
   - Default
   - TransparentFX
@@ -16,7 +18,7 @@ TagManager:
   - 
   - 
   - CameraCollider
-  - 
+  - Monster
   - 
   - 
   - 
