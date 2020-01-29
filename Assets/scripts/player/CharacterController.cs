@@ -9,6 +9,7 @@ public class CharacterController : MonoBehaviour
     public float moveSpeedMax = 5f; // pixel per second
     public float jumpSpeedMax = 5f; // jump force
     public float moveSpeed = 0;  // init at `Start()`
+    public float moveForce = 100;
     public float jumpSpeed = 0;  // init at `Start()`
     public int jumpEnergeMax = 10;
     public float atk = 1;
@@ -24,6 +25,48 @@ public class CharacterController : MonoBehaviour
     private int _jumpEnerge = 0;
     private Vector3 _movementForce;
     private Rigidbody2D _rigidbody2D;
+    #endregion
+
+    #region Character Methods
+    public void Attack()
+    {
+
+    }
+    public void MoveUpdate(Vector2 inputSpeed)
+    {
+        // speed > 0 => right
+        float oriSpeedY = _rigidbody2D.velocity.y;
+        Vector2 maxSpeedNow = new Vector2(inputSpeed.x, oriSpeedY);
+
+        if (Mathf.Abs(_rigidbody2D.velocity.x) > Mathf.Abs(maxSpeedNow.x))
+        {
+            _rigidbody2D.velocity = maxSpeedNow;
+        }
+        else
+        {
+            _rigidbody2D.AddForce(inputSpeed * moveForce);
+        }
+        
+        // TODO: replace scaleFliping with animation("look right", "look left")
+        // TODO: draw img: "look left"
+        if (inputSpeed.x > 0)
+        {
+            transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
+        }
+        else if (inputSpeed.x < 0)
+        {
+            transform.localScale = new Vector3(-1, transform.localScale.y, transform.localScale.z);
+        }
+    }
+
+    public void JumpUpdate(Vector2 inputSpeed)
+    {
+        if (_jumpEnerge > 0)
+        {
+            _jumpEnerge -= 1;
+            _rigidbody2D.AddForce(inputSpeed, ForceMode2D.Force);
+        }
+    }
     #endregion
 
 
@@ -45,7 +88,6 @@ public class CharacterController : MonoBehaviour
     {
         JumpUpdate(Vector2.up * jumpSpeed * Time.fixedDeltaTime);
         MoveUpdate(_movementForce * Time.fixedDeltaTime);
-        
     }
 
     // Update is called once per frame
@@ -63,51 +105,18 @@ public class CharacterController : MonoBehaviour
             {
                 _movementForce += new Vector3(-moveSpeed,0,0);
             }
-            if (InputManager.GetKey("jump"))
+            if (InputManager.GetKeyDown("jump"))
             {
                 if (groundChecker.isGrounded)
                 {
-                    _jumpEnerge = jumpEnergeMax;
+                    if (_jumpEnerge == 0)
+                        _jumpEnerge = jumpEnergeMax;
                 }
             }
             if (!InputManager.GetKey("jump"))
             {
                 _jumpEnerge = 0;
             }
-        }
-    }
-    #endregion
-
-    #region Character Methods
-    public void Attack()
-    {
-
-    }
-    public void MoveUpdate(Vector2 inputSpeed)
-    {
-        // speed > 0 => right
-        float oriSpeedY = _rigidbody2D.velocity.y;
-        _rigidbody2D.velocity = new Vector2(inputSpeed.x, oriSpeedY);
-        Debug.Log(inputSpeed);
-        // TODO: replace scaleFliping with animation("look right", "look left")
-        // TODO: draw img: "look left"
-        if (inputSpeed.x > 0)
-        {
-            transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
-        }
-        else if (inputSpeed.x < 0)
-        {
-            transform.localScale = new Vector3(-1, transform.localScale.y, transform.localScale.z);
-        }
-    }
-
-    public void JumpUpdate(Vector2 inputSpeed)
-    {
-        if (_jumpEnerge > 0)
-        {
-            _jumpEnerge -= 1;
-            _rigidbody2D.AddForce(inputSpeed, ForceMode2D.Force);
-            Debug.Log(inputSpeed);
         }
     }
     #endregion

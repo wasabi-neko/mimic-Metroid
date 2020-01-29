@@ -22,6 +22,7 @@ public class CameraTarget : MonoBehaviour
     // }
     private void FixedUpdate() {
         Vector3 vec = (target.position - transform.position) * speed;
+        // rigidbody.velocity = vec;
         rigidbody.velocity = vec;
     }
 }

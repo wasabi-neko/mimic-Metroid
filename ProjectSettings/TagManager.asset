@@ -46,9 +46,9 @@ TagManager:
   - name: Stage
     uniqueID: 1752682665
     locked: 0
-  - name: Default
-    uniqueID: 0
-    locked: 0
   - name: Foreground
     uniqueID: 1950422495
+    locked: 0
+  - name: Default
+    uniqueID: 0
     locked: 0

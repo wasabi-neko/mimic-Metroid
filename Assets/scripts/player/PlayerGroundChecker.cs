@@ -8,9 +8,18 @@ public class PlayerGroundChecker : MonoBehaviour
     public bool isGrounded = true;
 
     #region Trigger evnets
-    private void OnTriggerStay2D(Collider2D other)
+
+    private void OnTriggerEnter2D(Collider2D other) 
     {
         if (other.tag == "platform")
+        {
+            isGrounded = true;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.tag == "platform" && isGrounded == false)
         {
             isGrounded = true;
         }
@@ -24,10 +33,4 @@ public class PlayerGroundChecker : MonoBehaviour
         }
     }
     #endregion
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
